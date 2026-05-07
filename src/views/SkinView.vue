@@ -6,7 +6,10 @@ import SkinGenerator from '@/components/Skin/SkinGenerator.vue';
 import SkinGallery from '@/components/Skin/SkinGallery.vue';
 import SkinDetailsModal from '@/components/Skin/SkinDetailsModal.vue';
 import ConfirmModal from '@/components/Common/ConfirmModal.vue';
+import ProductionNotice from '@/components/Common/ProductionNotice.vue';
 import type { GalleryItem } from '@/types/skin';
+
+const isProduction = import.meta.env.PROD;
 
 const skinStore = useSkinStore();
 const authStore = useAuthStore();
@@ -45,6 +48,11 @@ const handleConfirmDelete = () => {
       <h1 class="title"><span class="kanji">アバターを作成しましょう</span> <br> Crea tu Avatar</h1>
       <p class="subtitle">Genera un avatar único estilo anime en pixel art</p>
     </header>
+
+    <ProductionNotice 
+      v-if="isProduction" 
+      message="La generación y el guardado de avatares personalizados requieren de un servidor activo. Actualmente, esta funcionalidad solo está plenamente operativa en el entorno de desarrollo local."
+    />
 
     <main class="skin-content">
       <!-- Guest Notice Banner -->

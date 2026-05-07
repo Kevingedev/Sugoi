@@ -6,6 +6,9 @@ import { useScrollToTopOnUpdate } from '@/composables/useScroll'
 import TopicCard from '@/components/Forum/TopicCard.vue'
 import CreateTopicForm from '@/components/Forum/CreateTopicForm.vue'
 import eatingRiceGif from '@/assets/images/gif/eatingrice.gif'
+import ProductionNotice from '@/components/Common/ProductionNotice.vue'
+
+const isProduction = import.meta.env.PROD
 
 const forumStore = useForumStore()
 const authStore = useAuthStore()
@@ -78,6 +81,8 @@ const handleTopicCreated = () => {
         </button>
       </div>
     </header>
+
+    <ProductionNotice v-if="isProduction" />
 
     <!-- Guest Notice Banner -->
     <div v-if="!authStore.isAuthenticated" class="auth-notice-banner card shadow-sm">

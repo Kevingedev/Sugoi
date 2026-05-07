@@ -9,7 +9,10 @@ import SkinGallery from '@/components/Skin/SkinGallery.vue';
 import SkinDetailsModal from '@/components/Skin/SkinDetailsModal.vue';
 import ConfirmModal from '@/components/Common/ConfirmModal.vue';
 import { User as UserIcon, Activity, MessageSquare } from 'lucide-vue-next';
+import ProductionNotice from '@/components/Common/ProductionNotice.vue';
 import type { GalleryItem } from '@/types/skin';
+
+const isProduction = import.meta.env.PROD;
 
 import ProfileTracking from '@/components/Profile/ProfileTracking.vue';
 import ProfileForum from '@/components/Profile/ProfileForum.vue';
@@ -78,6 +81,11 @@ const handleConfirmDelete = () => {
       </h1>
       <p class="subtitle">Gestiona tu identidad y tus creaciones Sugoi</p>
     </header>
+
+    <ProductionNotice 
+      v-if="isProduction" 
+      message="El perfil de usuario consolida tus avatares, temas del foro y seguimiento personal. Estas funciones dependen de un servidor activo y actualmente solo están disponibles de forma local."
+    />
 
     <main class="profile-grid">
       <!-- Section 1: User Identity -->

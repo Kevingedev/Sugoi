@@ -8,6 +8,9 @@ import TrackingDashboard from '@/components/Tracking/TrackingDashboard.vue';
 import TrackingFilters from '@/components/Tracking/TrackingFilters.vue';
 import TrackingGrid from '@/components/Tracking/TrackingGrid.vue';
 import ConfirmModal from '@/components/Common/ConfirmModal.vue';
+import ProductionNotice from '@/components/Common/ProductionNotice.vue';
+
+const isProduction = import.meta.env.PROD;
 import type { TrackingRecord, WatchStatus } from '@/types/tracking';
 import type { SavedNewsItem } from '@/types/news';
 
@@ -128,6 +131,11 @@ const removeSavedNews = (newsKey: string): void => {
                     </div>
                 </div>
             </header>
+
+            <ProductionNotice 
+                v-if="isProduction" 
+                message="El sistema de seguimiento de anime/manga y el guardado de noticias requieren de un servidor activo para persistir los datos. Por ahora, esta función solo está operativa en el entorno de desarrollo local."
+            />
 
             <TrackingDashboard :stats="trackingStore.stats" />
 

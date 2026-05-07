@@ -3,7 +3,6 @@ import HomeView from "../views/HomeView.vue";
 import ForumView from "../views/ForumView.vue";
 import TopicDetailView from "../views/TopicDetailView.vue";
 import FilterView from "../views/FilterView.vue";
-import TestAnimeConnection from '../views/TestAnimeConnection.vue'
 import NewsView from '../views/NewsView.vue'
 import NewsDetailView from '../views/NewsDetailView.vue'
 
@@ -46,11 +45,6 @@ const router = createRouter({
       path: "/forum/topic/:id",
       name: "topic-detail",
       component: TopicDetailView,
-    },
-    {
-      path: '/test-anime-connection',
-      name: 'test-anime-connection',
-      component: TestAnimeConnection,
     },
     {
       path: '/create-skin',
