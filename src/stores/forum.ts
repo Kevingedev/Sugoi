@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import localApiClient from '@/services/localApiClient'
 
 export interface Topic {
   id: string
@@ -35,9 +36,8 @@ export const useForumStore = defineStore('forum', {
     async fetchTopics() {
       this.loading = true
       try {
-        const response = await fetch('http://localhost:5174/topics')
-        const data = await response.json()
-        this.topics = data.sort((a: Topic, b: Topic) =>
+        const response = await localApiClient.get('/topics')
+        this.topics = response.data.sort((a: Topic, b: Topic) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         )
       } catch (error) {
@@ -50,8 +50,8 @@ export const useForumStore = defineStore('forum', {
     async fetchTopicById(id: string) {
       this.loading = true
       try {
-        const response = await fetch(`http://localhost:5174/topics/${id}`)
-        this.currentTopic = await response.json()
+        const response = await localApiClient.get(`/topics/${id}`)
+        this.currentTopic = response.data
         await this.fetchReplies(id)
       } catch (error) {
         console.error('Error fetching topic:', error)
@@ -62,8 +62,8 @@ export const useForumStore = defineStore('forum', {
 
     async fetchReplies(topicId: string) {
       try {
-        const response = await fetch(`http://localhost:5174/replies?topicId=${topicId}`)
-        this.replies = await response.json()
+        const response = await localApiClient.get(`/replies?topicId=${topicId}`)
+        this.replies = response.data
       } catch (error) {
         console.error('Error fetching replies:', error)
       }
@@ -76,14 +76,9 @@ export const useForumStore = defineStore('forum', {
         createdAt: new Date().toISOString(),
       }
       try {
-        const response = await fetch('http://localhost:5174/topics', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newTopic),
-        })
-        const data = await response.json()
-        this.topics.unshift(data)
-        return data
+        const response = await localApiClient.post('/topics', newTopic)
+        this.topics.unshift(response.data)
+        return response.data
       } catch (error) {
         console.error('Error creating topic:', error)
       }
@@ -96,13 +91,8 @@ export const useForumStore = defineStore('forum', {
         createdAt: new Date().toISOString(),
       }
       try {
-        const response = await fetch('http://localhost:5174/replies', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newReply),
-        })
-        const data = await response.json()
-        this.replies.push(data)
+        const response = await localApiClient.post('/replies', newReply)
+        this.replies.push(response.data)
       } catch (error) {
         console.error('Error adding reply:', error)
       }
@@ -110,8 +100,8 @@ export const useForumStore = defineStore('forum', {
 
     async fetchLatestComments(limit = 3): Promise<CommunityComment[]> {
       try {
-        const response = await fetch('http://localhost:5174/topics')
-        const data = (await response.json()) as Topic[]
+        const response = await localApiClient.get('/topics')
+        const data = response.data as Topic[]
         return data
           .slice()
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())

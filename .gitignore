@@ -43,3 +43,6 @@ __screenshots__/
 .venv/*
 convert_gif*.py
 .u2net/
+
+# Project specific
+features/
